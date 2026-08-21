@@ -1,8 +1,798 @@
-const htmlContent = "<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Philius - Klimaforschungs-Agentur</title>\n    <link href=\"https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css\" rel=\"stylesheet\" />\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n\n        :root {\n            --primary-dark: #1a1a2e;\n            --primary-light: #2d3561;\n            --accent-green: #00d084;\n            --accent-blue: #0099ff;\n            --accent-orange: #ff6b35;\n            --text-light: #e0e0e0;\n            --text-dark: #1a1a2e;\n            --bg-dark: #0f0f1e;\n        }\n\n        body {\n            font-family: \"Courier New\", monospace;\n            background-color: var(--bg-dark);\n            color: var(--text-light);\n            line-height: 1.4;\n            background-image:\n                linear-gradient(0deg, transparent 24%, rgba(0, 208, 132, 0.05) 25%, rgba(0, 208, 132, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 208, 132, 0.05) 75%, rgba(0, 208, 132, 0.05) 76%, transparent 77%, transparent),\n                linear-gradient(90deg, transparent 24%, rgba(0, 153, 255, 0.05) 25%, rgba(0, 153, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 153, 255, 0.05) 75%, rgba(0, 153, 255, 0.05) 76%, transparent 77%, transparent);\n            background-size: 50px 50px;\n        }\n\n        .container {\n            display: flex;\n            flex-direction: column;\n            height: 100vh;\n            overflow: hidden;\n        }\n\n        header {\n            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);\n            border-bottom: 4px solid var(--accent-green);\n            padding: 20px 30px;\n            display: flex;\n            align-items: center;\n            justify-content: space-between;\n            box-shadow: 0 4px 10px rgba(0, 208, 132, 0.2);\n            flex-wrap: wrap;\n            gap: 15px;\n        }\n\n        .logo-section {\n            display: flex;\n            align-items: center;\n            gap: 20px;\n        }\n\n        .pixel-logo {\n            width: 60px;\n            height: 60px;\n            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));\n            border: 3px solid var(--accent-orange);\n            position: relative;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            font-weight: bold;\n            font-size: 28px;\n            color: var(--bg-dark);\n            letter-spacing: 2px;\n            box-shadow:\n                4px 4px 0px rgba(0, 0, 0, 0.3),\n                inset -2px -2px 0px rgba(0, 0, 0, 0.2);\n            transform: skewX(-5deg);\n        }\n\n        .logo-text h1 {\n            font-size: 32px;\n            letter-spacing: 3px;\n            color: var(--accent-green);\n            text-shadow: 2px 2px 0px rgba(0, 153, 255, 0.3);\n        }\n\n        .logo-text p {\n            font-size: 11px;\n            color: var(--accent-blue);\n            letter-spacing: 1px;\n            margin-top: 2px;\n        }\n\n        .header-actions {\n            display: flex;\n            gap: 15px;\n            flex-wrap: wrap;\n        }\n\n        .btn-header {\n            padding: 10px 20px;\n            background: var(--accent-green);\n            color: var(--bg-dark);\n            border: 2px solid var(--accent-orange);\n            font-weight: bold;\n            cursor: pointer;\n            font-family: \"Courier New\", monospace;\n            font-size: 11px;\n            letter-spacing: 1px;\n            transition: all 0.2s;\n            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);\n        }\n\n        .btn-header:hover {\n            transform: translate(-2px, -2px);\n            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);\n        }\n\n        .btn-header:active {\n            transform: translate(0px, 0px);\n            box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);\n        }\n\n        .tab-nav {\n            background: var(--primary-light);\n            border-bottom: 3px solid var(--accent-green);\n            display: flex;\n            gap: 0;\n        }\n\n        .tab-button {\n            flex: 1;\n            padding: 12px 20px;\n            background: var(--primary-dark);\n            color: var(--text-light);\n            border: 2px solid var(--primary-light);\n            border-right: 2px solid var(--accent-blue);\n            cursor: pointer;\n            font-family: \"Courier New\", monospace;\n            font-size: 12px;\n            font-weight: bold;\n            letter-spacing: 1px;\n            transition: all 0.2s;\n        }\n\n        .tab-button:hover {\n            background: var(--primary-light);\n            color: var(--accent-green);\n        }\n\n        .tab-button.active {\n            background: var(--accent-green);\n            color: var(--bg-dark);\n            border-bottom: 4px solid var(--accent-orange);\n        }\n\n        .main-content {\n            display: flex;\n            flex: 1;\n            overflow: hidden;\n            gap: 0;\n        }\n\n        .content-window {\n            flex: 1;\n            display: flex;\n            flex-direction: column;\n            background: var(--primary-dark);\n            border-right: 4px solid var(--accent-blue);\n            overflow: hidden;\n        }\n\n        .content-window:last-child {\n            border-right: none;\n        }\n\n        .window-header {\n            padding: 15px 20px;\n            background: var(--primary-light);\n            border-bottom: 3px solid var(--accent-green);\n            font-weight: bold;\n            color: var(--accent-green);\n            letter-spacing: 2px;\n            font-size: 13px;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n        }\n\n        .window-controls {\n            display: flex;\n            gap: 8px;\n        }\n\n        .btn-control {\n            padding: 5px 12px;\n            background: var(--accent-orange);\n            color: white;\n            border: 1px solid var(--accent-green);\n            font-size: 10px;\n            cursor: pointer;\n            font-weight: bold;\n            transition: all 0.2s;\n            box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);\n        }\n\n        .btn-control:hover {\n            transform: translate(-1px, -1px);\n            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);\n        }\n\n        .window-content {\n            flex: 1;\n            overflow-y: auto;\n            padding: 20px;\n            background: linear-gradient(135deg, var(--primary-dark) 0%, rgba(0, 208, 132, 0.03) 100%);\n        }\n\n        .window-content.chat-content {\n            padding: 0;\n            overflow: hidden;\n            display: flex;\n            min-height: 0;\n        }\n\n        #n8n-chat {\n            width: 100%;\n            height: 100%;\n            min-height: 0;\n            flex: 1;\n            display: flex;\n            flex-direction: column;\n            /* n8n chat widget theming */\n            --chat--color-primary: var(--accent-green);\n            --chat--color-secondary: var(--accent-blue);\n            --chat--window--width: 100%;\n            --chat--window--height: 100%;\n        }\n\n        #n8n-chat .chat-layout,\n        #n8n-chat .chat-wrapper {\n            height: 100%;\n            min-height: 0;\n            flex: 1;\n        }\n\n        .chatbot-iframe {\n            border: none;\n            width: 100%;\n            height: 100%;\n            background: var(--primary-dark);\n        }\n\n        .pdf-viewer {\n            width: 100%;\n            height: 100%;\n            border: none;\n        }\n\n        .summary-text {\n            color: var(--text-light);\n            font-size: 12px;\n            line-height: 1.8;\n        }\n\n        .summary-text h3 {\n            color: var(--accent-green);\n            font-size: 14px;\n            margin: 20px 0 10px 0;\n            letter-spacing: 1px;\n            border-bottom: 2px solid var(--accent-blue);\n            padding-bottom: 8px;\n        }\n\n        .summary-text h4 {\n            color: var(--accent-blue);\n            font-size: 12px;\n            margin: 15px 0 8px 0;\n            letter-spacing: 1px;\n        }\n\n        .summary-text p {\n            margin-bottom: 12px;\n            text-align: justify;\n        }\n\n        .summary-text ul, .summary-text ol {\n            margin-left: 20px;\n            margin-bottom: 12px;\n        }\n\n        .summary-text li {\n            margin-bottom: 6px;\n        }\n\n        .summary-badge {\n            display: inline-block;\n            background: var(--accent-orange);\n            color: var(--bg-dark);\n            padding: 4px 8px;\n            margin: 2px;\n            font-size: 10px;\n            font-weight: bold;\n            border: 1px solid var(--accent-green);\n        }\n\n        .window-content::-webkit-scrollbar {\n            width: 12px;\n        }\n\n        .window-content::-webkit-scrollbar-track {\n            background: var(--primary-light);\n            border-left: 2px solid var(--accent-green);\n        }\n\n        .window-content::-webkit-scrollbar-thumb {\n            background: var(--accent-green);\n            border: 2px solid var(--accent-blue);\n            cursor: pointer;\n        }\n\n        .window-content::-webkit-scrollbar-thumb:hover {\n            background: var(--accent-orange);\n        }\n\n        .modal {\n            display: none;\n            position: fixed;\n            z-index: 1000;\n            left: 0;\n            top: 0;\n            width: 100%;\n            height: 100%;\n            background-color: rgba(0, 0, 0, 0.8);\n            border: 4px solid var(--accent-green);\n        }\n\n        .modal.show {\n            display: flex;\n            align-items: center;\n            justify-content: center;\n        }\n\n        .modal-content {\n            background: var(--primary-dark);\n            padding: 0;\n            border: 4px solid var(--accent-blue);\n            width: 90%;\n            height: 90%;\n            max-width: 1200px;\n            position: relative;\n            box-shadow: 0 8px 20px rgba(0, 208, 132, 0.3);\n        }\n\n        .modal-header {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            padding: 20px;\n            background: var(--primary-light);\n            border-bottom: 3px solid var(--accent-green);\n        }\n\n        .modal-header h2 {\n            color: var(--accent-green);\n            letter-spacing: 2px;\n        }\n\n        .close-btn {\n            background: var(--accent-orange);\n            color: white;\n            border: 2px solid var(--accent-green);\n            padding: 10px 20px;\n            cursor: pointer;\n            font-weight: bold;\n            font-family: \"Courier New\", monospace;\n            font-size: 12px;\n            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);\n            transition: all 0.2s;\n        }\n\n        .close-btn:hover {\n            transform: translate(-2px, -2px);\n            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);\n        }\n\n        .modal-body {\n            width: 100%;\n            height: calc(100% - 70px);\n            overflow-y: auto;\n        }\n\n        .modal-pdf {\n            width: 100%;\n            height: 100%;\n        }\n\n        @media (max-width: 1000px) {\n            .main-content {\n                flex-direction: column;\n            }\n\n            .content-window {\n                border-right: none;\n                border-bottom: 4px solid var(--accent-blue);\n                height: 33.33%;\n            }\n\n            .content-window:last-child {\n                border-bottom: none;\n            }\n\n            .tab-nav {\n                display: none;\n            }\n\n            .tab-content {\n                display: none !important;\n            }\n\n            .tab-content.active {\n                display: flex !important;\n            }\n        }\n\n        @media (max-width: 768px) {\n            header {\n                flex-direction: column;\n                gap: 15px;\n                text-align: center;\n            }\n\n            .logo-text h1 {\n                font-size: 24px;\n            }\n\n            .tab-nav {\n                display: flex;\n            }\n\n            .tab-button {\n                font-size: 10px;\n                padding: 10px 15px;\n            }\n        }\n\n        .tab-content {\n            display: flex;\n        }\n\n        .tab-content {\n            display: none;\n        }\n\n        .tab-content.active {\n            display: flex;\n        }\n\n        @media (min-width: 1001px) {\n            .tab-content {\n                display: flex !important;\n            }\n\n            .tab-nav {\n                display: none;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <header>\n            <div class=\"logo-section\">\n                <div class=\"pixel-logo\">P</div>\n                <div class=\"logo-text\">\n                    <h1>PHILIUS</h1>\n                    <p>KLIMAFORSCHUNGS-AGENTUR</p>\n                </div>\n            </div>\n            <div class=\"header-actions\">\n                <button class=\"btn-header\" onclick=\"openFullscreenPDF()\">▢ PDF VOLLBILD</button>\n                <button class=\"btn-header\" onclick=\"downloadPDF()\">↓ DOWNLOAD</button>\n                <button class=\"btn-header\" onclick=\"scrollToTop()\">↑ NACH OBEN</button>\n            </div>\n        </header>\n\n        <div class=\"tab-nav\" id=\"tabNav\">\n            <button class=\"tab-button active\" onclick=\"switchTab('chatbot')\">▌ CHATBOT</button>\n            <button class=\"tab-button\" onclick=\"switchTab('pdf')\">📄 PDF</button>\n            <button class=\"tab-button\" onclick=\"switchTab('summary')\">📋 ZUSAMMENFASSUNG</button>\n        </div>\n\n        <div class=\"main-content\">\n            <div class=\"content-window tab-content active\" id=\"tab-chatbot\">\n                <div class=\"window-header\">\n                    ▌ FACHARBEIT-ASSISTENT\n                </div>\n                <div class=\"window-content chat-content\">\n                    <div id=\"n8n-chat\"></div>\n                </div>\n            </div>\n\n            <div class=\"content-window tab-content\" id=\"tab-pdf\">\n                <div class=\"window-header\">\n                    📄 FACHARBEIT - PDF VIEWER\n                </div>\n                <div class=\"window-content\">\n                    <iframe\n                        id=\"pdfViewer\"\n                        class=\"pdf-viewer\"\n                        src=\"https://gevdmfvfcdiioyrhlodw.supabase.co/storage/v1/object/public/files/Facharbeit%20final.pdf\"\n                        title=\"PDF Viewer\"\n                    ></iframe>\n                </div>\n            </div>\n\n            <div class=\"content-window tab-content\" id=\"tab-summary\">\n                <div class=\"window-header\">\n                    📋 ZUSAMMENFASSUNG\n                </div>\n                <div class=\"window-content summary-text\" id=\"summaryContent\">\n                    <h3>CO₂-Bepreisung und Emissionshandel als Instrument für eine nachhaltige Wirtschaft</h3>\n                    <p><strong>Leitfrage:</strong> Ist die CO₂-Bepreisung – insbesondere der Emissionshandel – ein wirtschaftlich effizientes Instrument für eine nachhaltigere Wirtschaft?</p>\n\n                    <h4>📌 Kernthemen</h4>\n                    <div>\n                        <span class=\"summary-badge\">CO₂-Bepreisung</span>\n                        <span class=\"summary-badge\">Emissionshandel</span>\n                        <span class=\"summary-badge\">EU-EHS</span>\n                        <span class=\"summary-badge\">Wirtschaftliche Effizienz</span>\n                        <span class=\"summary-badge\">Klimaschutz</span>\n                    </div>\n\n                    <h3>1. Theoretische Grundlagen</h3>\n                    <p>Die Facharbeit basiert auf zentralen ökonomischen Konzepten:</p>\n                    <ul>\n                        <li><strong>Wohlfahrtsökonomie:</strong> Maximierung des gesamtgesellschaftlichen Wohlstands</li>\n                        <li><strong>Externe Effekte:</strong> CO₂-Emissionen als negativer externer Effekt, der nicht im Marktpreis berücksichtigt wird</li>\n                        <li><strong>Grenzschadens- und Grenzvermeidungskosten:</strong> Kostenoptimale Emission dort, wo Vermeidungskosten am niedrigsten sind</li>\n                        <li><strong>Statische Effizienz:</strong> Emissionsreduktion zu minimalen Gesamtkosten</li>\n                        <li><strong>Dynamische Effizienz:</strong> Anreize für technologische Innovation und langfristiges Wachstum</li>\n                    </ul>\n\n                    <h3>2. CO₂-Bepreisung: Instrumente und Mechanismen</h3>\n                    <h4>A) CO₂-Steuer vs. Emissionshandel</h4>\n                    <ul>\n                        <li><strong>CO₂-Steuer:</strong> Direkte Besteuerung pro Tonne CO₂ mit bekanntem Preis, aber unsicherer Menge</li>\n                        <li><strong>Emissionshandel (Cap-and-Trade):</strong> Festgelegte Emissionsmenge (Cap), aber variabler Preis durch Markt</li>\n                    </ul>\n\n                    <h4>B) EU-Emissionshandelssystem (EU-EHS)</h4>\n                    <ul>\n                        <li>Funktioniert nach dem Cap-and-Trade-Prinzip</li>\n                        <li>Begrenzte Anzahl von Emissionszertifikaten wird ausgegeben oder versteigert</li>\n                        <li>Unternehmen können nicht benötigte Zertifikate verkaufen oder zusätzliche zukaufen</li>\n                        <li>Schafft Anreize für Emissionsreduktion, wo es wirtschaftlich am effizientesten ist</li>\n                    </ul>\n\n                    <h3>3. Effizienzanalyse des Emissionshandels</h3>\n                    <h4>Statische Effizienz</h4>\n                    <p>Das Kernprinzip: Emissionen werden dort reduziert, wo die Vermeidungskosten am niedrigsten sind. Dies führt zu einer Emissionsreduktion bei minimierten Gesamtkosten für die Wirtschaft.</p>\n                    <ul>\n                        <li>Unternehmen mit hohen Vermeidungskosten kaufen Zertifikate von Unternehmen mit niedrigen Kosten</li>\n                        <li>Dies ist deutlich kostengünstiger als ein einheitlicher Reduktionsbefehl für alle</li>\n                        <li>Kosteneffizienz ist ein zentraler Vorteil des Emissionshandels</li>\n                    </ul>\n\n                    <h4>Dynamische Effizienz</h4>\n                    <p>Der Emissionshandel schafft starke Innovationsanreize:</p>\n                    <ul>\n                        <li>Höhere CO₂-Preise machen emissionsarme Technologien rentabler</li>\n                        <li>Unternehmen investieren in Forschung und Entwicklung für klimafreundliche Lösungen</li>\n                        <li>Technologische Durchbrüche führen zu langfristiger Wettbewerbsfähigkeit</li>\n                    </ul>\n\n                    <h3>4. Wichtigste Erkenntnisse</h3>\n                    <h4>✅ Stärken des Emissionshandels:</h4>\n                    <ul>\n                        <li><strong>Kosteneffizienz:</strong> Reduziert Emissionen zu minimalen Gesamtkosten</li>\n                        <li><strong>Innovationsanreize:</strong> Schafft Anreize für emissionsarme Technologien</li>\n                        <li><strong>Flexibilität:</strong> Unternehmen können selbst entscheiden, wie sie Emissionen reduzieren</li>\n                        <li><strong>Marktmechanismus:</strong> Zertifikathandel sorgt für effiziente Ressourcenallokation</li>\n                    </ul>\n\n                    <h4>⚠️ Limitationen und Herausforderungen:</h4>\n                    <ul>\n                        <li><strong>Informationsprobleme:</strong> Unternehmen kennen ihre Vermeidungskosten oft nicht präzise</li>\n                        <li><strong>Marktabdeckung:</strong> Nicht alle Sektoren sind im EU-EHS erfasst (z.B. nur teilweise Verkehr und Landwirtschaft)</li>\n                        <li><strong>Kostenlose Zertifikate:</strong> Anfangs erhielten große Emittenten Zertifikate kostenlos, was die Anreizwirkung schwächte</li>\n                        <li><strong>Preisvolatilität:</strong> Schwankende CO₂-Preise erschweren langfristige Investitionsentscheidungen</li>\n                        <li><strong>Carbon Leakage:</strong> Hohe CO₂-Preise können Produktion in Länder ohne Bepreisung verlagern</li>\n                        <li><strong>Wettbewerbliche Effekte:</strong> Ungleiche Belastung zwischen verschiedenen Sektoren und Unternehmen</li>\n                    </ul>\n\n                    <h3>5. Gesamtfazit</h3>\n                    <p><strong>Das EU-EHS ist trotz Einschränkungen ein wirtschaftlich effizientes Instrument.</strong></p>\n                    <ul>\n                        <li>Es verbindet erfolgreich Klimaschutz mit wirtschaftlicher Leistungsfähigkeit</li>\n                        <li>Die kosteneffiziente Emissionsreduktion ist wissenschaftlich gut belegt</li>\n                        <li>Die Innovationsanreize tragen zu langfristiger Wettbewerbsfähigkeit bei</li>\n                        <li>Verbesserungen sind möglich (höhere Zertifikatpreise, vollständigere Marktabdeckung, geringere Carbon Leakage), ändern aber nicht an der grundsätzlichen Effizienz</li>\n                    </ul>\n\n                    <h3>6. Fazit für die Klimapolitik</h3>\n                    <p>Die CO₂-Bepreisung durch Emissionshandel ist <strong>der richtige Weg</strong>, um Klimaziele zu erreichen, ohne die Wirtschaft unnötig zu belasten. Sie ermöglicht:</p>\n                    <ul>\n                        <li>Kostengünstige Emissionsreduktion</li>\n                        <li>Technologische Innovation</li>\n                        <li>Wirtschaftliches Wachstum</li>\n                        <li>Langfristige Wettbewerbsfähigkeit</li>\n                    </ul>\n\n                    <p style=\"margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--accent-blue); color: var(--accent-blue); font-size: 11px;\">\n                        <strong>📌 Hinweis:</strong> Dies ist eine Zusammenfassung der Facharbeit. Für detaillierte Analysen, Grafiken und vollständige Quellenangaben öffnen Sie bitte das PDF in der PDF-Ansicht oder laden Sie die Facharbeit herunter.\n                    </p>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"modal\" id=\"fullscreenModal\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <h2>FACHARBEIT - VOLLBILD</h2>\n                <button class=\"close-btn\" onclick=\"closeFullscreenPDF()\">✕ SCHLIESSEN</button>\n            </div>\n            <div class=\"modal-body\">\n                <iframe\n                    id=\"modalPDF\"\n                    class=\"modal-pdf\"\n                    title=\"Fullscreen PDF\"\n                ></iframe>\n            </div>\n        </div>\n    </div>\n\n    <script type=\"module\">\n        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';\n        createChat({\n            webhookUrl: 'https://peig.app.n8n.cloud/webhook/b2e4bb64-56de-44da-a229-20ff20ddb957/chat',\n            mode: 'fullscreen',\n            target: '#n8n-chat',\n            initialMessages: [\n                'Hi! Schön, dass du die Facharbeit heruntergeladen hast.',\n                'Ich freue mich auf deine Gedanken – und gerne können wir auch besprechen, wie du Teil unserer Bewegung werden könntest.'\n            ]\n        });\n    </script>\n\n    <script>\n        const PDF_URL = 'https://gevdmfvfcdiioyrhlodw.supabase.co/storage/v1/object/public/files/Facharbeit%20final.pdf';\n\n        document.addEventListener('DOMContentLoaded', function() {\n            updateLayout();\n            window.addEventListener('resize', updateLayout);\n        });\n\n        function updateLayout() {\n            const width = window.innerWidth;\n            const tabNav = document.getElementById('tabNav');\n            if (width <= 1000) {\n                tabNav.style.display = 'flex';\n            } else {\n                tabNav.style.display = 'none';\n            }\n        }\n\n        function switchTab(tabName) {\n            const tabs = document.querySelectorAll('.tab-content');\n            tabs.forEach(tab => tab.classList.remove('active'));\n            const buttons = document.querySelectorAll('.tab-button');\n            buttons.forEach(btn => btn.classList.remove('active'));\n            document.getElementById('tab-' + tabName).classList.add('active');\n            if (event && event.target) {\n                event.target.classList.add('active');\n            }\n        }\n\n        function openFullscreenPDF() {\n            const modalPDF = document.getElementById('modalPDF');\n            if (!modalPDF.src) {\n                modalPDF.src = PDF_URL;\n            }\n            document.getElementById('fullscreenModal').classList.add('show');\n        }\n\n        function closeFullscreenPDF() {\n            document.getElementById('fullscreenModal').classList.remove('show');\n        }\n\n        function downloadPDF() {\n            window.open(PDF_URL, '_blank');\n        }\n\n        function scrollToTop() {\n            const activeTab = document.querySelector('.tab-content.active .window-content');\n            if (activeTab) {\n                activeTab.scrollTop = 0;\n            }\n        }\n\n        window.onclick = function(event) {\n            const modal = document.getElementById('fullscreenModal');\n            if (event.target === modal) {\n                closeFullscreenPDF();\n            }\n        }\n\n        document.addEventListener('keydown', function(event) {\n            if (event.key === 'Escape') {\n                closeFullscreenPDF();\n            }\n        });\n    </script>\n</body>\n</html>\n";
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philius - Klimaforschungs-Agentur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-return {
-    html: htmlContent,
-    headers: {
-        'Content-Type': 'text/html; charset=utf-8'
-    }
-};
+        :root {
+            --primary-dark: #1a1a2e;
+            --primary-light: #2d3561;
+            --accent-green: #00d084;
+            --accent-blue: #0099ff;
+            --accent-orange: #ff6b35;
+            --text-light: #e0e0e0;
+            --text-dark: #1a1a2e;
+            --bg-dark: #0f0f1e;
+        }
+
+        body {
+            font-family: "Courier New", monospace;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.4;
+            background-image:
+                linear-gradient(0deg, transparent 24%, rgba(0, 208, 132, 0.05) 25%, rgba(0, 208, 132, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 208, 132, 0.05) 75%, rgba(0, 208, 132, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(0, 153, 255, 0.05) 25%, rgba(0, 153, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 153, 255, 0.05) 75%, rgba(0, 153, 255, 0.05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+            border-bottom: 4px solid var(--accent-green);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0, 208, 132, 0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .pixel-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border: 3px solid var(--accent-orange);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 28px;
+            color: var(--bg-dark);
+            letter-spacing: 2px;
+            box-shadow:
+                4px 4px 0px rgba(0, 0, 0, 0.3),
+                inset -2px -2px 0px rgba(0, 0, 0, 0.2);
+            transform: skewX(-5deg);
+        }
+
+        .logo-text h1 {
+            font-size: 32px;
+            letter-spacing: 3px;
+            color: var(--accent-green);
+            text-shadow: 2px 2px 0px rgba(0, 153, 255, 0.3);
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--accent-blue);
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-header {
+            padding: 10px 20px;
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            border: 2px solid var(--accent-orange);
+            font-weight: bold;
+            cursor: pointer;
+            font-family: "Courier New", monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-header:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-header:active {
+            transform: translate(0px, 0px);
+            box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            background: var(--primary-light);
+            border-bottom: 3px solid var(--accent-green);
+            display: flex;
+            gap: 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--primary-dark);
+            color: var(--text-light);
+            border: 2px solid var(--primary-light);
+            border-right: 2px solid var(--accent-blue);
+            cursor: pointer;
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .tab-button:hover {
+            background: var(--primary-light);
+            color: var(--accent-green);
+        }
+
+        .tab-button.active {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            border-bottom: 4px solid var(--accent-orange);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            gap: 0;
+        }
+
+        /* THREE COLUMN LAYOUT */
+        .content-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--primary-dark);
+            border-right: 4px solid var(--accent-blue);
+            overflow: hidden;
+        }
+
+        .content-window:last-child {
+            border-right: none;
+        }
+
+        /* WINDOW HEADER */
+        .window-header {
+            padding: 15px 20px;
+            background: var(--primary-light);
+            border-bottom: 3px solid var(--accent-green);
+            font-weight: bold;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-control {
+            padding: 5px 12px;
+            background: var(--accent-orange);
+            color: white;
+            border: 1px solid var(--accent-green);
+            font-size: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-control:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-control:active {
+            transform: translate(0px, 0px);
+            box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* WINDOW CONTENT */
+        .window-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, rgba(0, 208, 132, 0.03) 100%);
+        }
+
+        /* CHATBOT SECTION */
+        .chatbot-iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-dark);
+        }
+
+        .chat-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 40px;
+            text-align: center;
+            color: var(--accent-blue);
+            height: 100%;
+        }
+
+        .chat-placeholder h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+        }
+
+        .chat-placeholder p {
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            animation: blink 1.4s infinite;
+            margin: 0 3px;
+            color: var(--accent-orange);
+            font-size: 14px;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        /* PDF VIEWER */
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* SUMMARY SECTION */
+        .summary-text {
+            color: var(--text-light);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .summary-text h3 {
+            color: var(--accent-green);
+            font-size: 14px;
+            margin: 20px 0 10px 0;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 8px;
+        }
+
+        .summary-text h4 {
+            color: var(--accent-blue);
+            font-size: 12px;
+            margin: 15px 0 8px 0;
+            letter-spacing: 1px;
+        }
+
+        .summary-text p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .summary-text ul, .summary-text ol {
+            margin-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .summary-text li {
+            margin-bottom: 6px;
+        }
+
+        .summary-badge {
+            display: inline-block;
+            background: var(--accent-orange);
+            color: var(--bg-dark);
+            padding: 4px 8px;
+            margin: 2px;
+            font-size: 10px;
+            font-weight: bold;
+            border: 1px solid var(--accent-green);
+        }
+
+        /* SCROLLBAR STYLING */
+        .window-content::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .window-content::-webkit-scrollbar-track {
+            background: var(--primary-light);
+            border-left: 2px solid var(--accent-green);
+        }
+
+        .window-content::-webkit-scrollbar-thumb {
+            background: var(--accent-green);
+            border: 2px solid var(--accent-blue);
+            cursor: pointer;
+        }
+
+        .window-content::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-orange);
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 4px solid var(--accent-green);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--primary-dark);
+            padding: 0;
+            border: 4px solid var(--accent-blue);
+            width: 90%;
+            height: 90%;
+            max-width: 1200px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 208, 132, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--primary-light);
+            border-bottom: 3px solid var(--accent-green);
+        }
+
+        .modal-header h2 {
+            color: var(--accent-green);
+            letter-spacing: 2px;
+        }
+
+        .close-btn {
+            background: var(--accent-orange);
+            color: white;
+            border: 2px solid var(--accent-green);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: "Courier New", monospace;
+            font-size: 12px;
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-body {
+            width: 100%;
+            height: calc(100% - 70px);
+            overflow-y: auto;
+        }
+
+        .modal-pdf {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1400px) {
+            .content-window {
+                flex: 1;
+            }
+
+            .summary-text {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .content-window {
+                border-right: none;
+                border-bottom: 4px solid var(--accent-blue);
+                height: 33.33%;
+            }
+
+            .content-window:last-child {
+                border-bottom: none;
+            }
+
+            .tab-nav {
+                display: none;
+            }
+
+            .tab-content {
+                display: none !important;
+            }
+
+            .tab-content.active {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .logo-text h1 {
+                font-size: 24px;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .content-window {
+                height: 33.33%;
+            }
+
+            .tab-nav {
+                display: flex;
+            }
+
+            .tab-button {
+                font-size: 10px;
+                padding: 10px 15px;
+            }
+        }
+
+        /* TAB CONTENT VISIBILITY */
+        .tab-content {
+            display: flex;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* DESKTOP: SHOW ALL */
+        @media (min-width: 1001px) {
+            .tab-content {
+                display: flex !important;
+            }
+
+            .tab-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-section">
+                <div class="pixel-logo">P</div>
+                <div class="logo-text">
+                    <h1>PHILIUS</h1>
+                    <p>KLIMAFORSCHUNGS-AGENTUR</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-header" onclick="openFullscreenPDF()">▢ PDF VOLLBILD</button>
+                <button class="btn-header" onclick="downloadPDF()">↓ DOWNLOAD</button>
+                <button class="btn-header" onclick="scrollToTop()">↑ NACH OBEN</button>
+            </div>
+        </header>
+
+        <!-- TAB NAVIGATION (Mobile/Tablet) -->
+        <div class="tab-nav" id="tabNav">
+            <button class="tab-button active" onclick="switchTab('chatbot')">▌ CHATBOT</button>
+            <button class="tab-button" onclick="switchTab('pdf')">📄 PDF</button>
+            <button class="tab-button" onclick="switchTab('summary')">📋 ZUSAMMENFASSUNG</button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- CHATBOT WINDOW -->
+            <div class="content-window tab-content active" id="tab-chatbot">
+                <div class="window-header">
+                    ▌ FACHARBEIT-ASSISTENT
+                </div>
+                <div class="window-content">
+                    <iframe
+                        class="chatbot-iframe"
+                        src="https://peig.app.n8n.cloud/webhook/b2e4bb64-56de-44da-a229-20ff20ddb957/chat"
+                        allow="microphone"
+                        title="Philius Chatbot"
+                    ></iframe>
+                </div>
+            </div>
+
+            <!-- PDF WINDOW -->
+            <div class="content-window tab-content" id="tab-pdf">
+                <div class="window-header">
+                    📄 FACHARBEIT - PDF VIEWER
+                    <div class="window-controls">
+                        <button class="btn-control" onclick="togglePDFView()">⟳ ANSICHT</button>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <iframe
+                        id="pdfViewer"
+                        class="pdf-viewer"
+                        src="./Facharbeit final.pdf"
+                        title="PDF Viewer"
+                    ></iframe>
+                </div>
+            </div>
+
+            <!-- SUMMARY WINDOW -->
+            <div class="content-window tab-content" id="tab-summary">
+                <div class="window-header">
+                    📋 ZUSAMMENFASSUNG
+                    <div class="window-controls">
+                        <button class="btn-control" onclick="downloadSummary()">↓ EXPORT</button>
+                    </div>
+                </div>
+                <div class="window-content summary-text" id="summaryContent">
+                    <h3>CO2-Emissionsreduktion & Carbon Pricing</h3>
+                    <p>Eine umfassende Analyse wirtschaftlich effizienter Klimapolitik</p>
+
+                    <h4>📌 Kernthemen</h4>
+                    <div>
+                        <span class="summary-badge">CO2-Reduktion</span>
+                        <span class="summary-badge">Carbon Pricing</span>
+                        <span class="summary-badge">Klimapolitik</span>
+                        <span class="summary-badge">Wirtschaftseffizienz</span>
+                    </div>
+
+                    <h3>1. Einführung</h3>
+                    <p>Diese Facharbeit behandelt die wirtschaftlich effektiven Methoden zur Reduktion von CO2-Emissionen, ohne dabei die wirtschaftliche Leistungsfähigkeit zu schädigen. Der Fokus liegt auf zwei Kernthemen: CO2-Emissionsreduktion durch technologische Innovation und Carbon Pricing als marktbasiertes Politikinstrument.</p>
+
+                    <h3>2. CO2-Emissionsreduktion</h3>
+                    <h4>Sektoren und Ansätze:</h4>
+                    <ul>
+                        <li><strong>Energiewende:</strong> Erneuerbare Energien (Solar, Wind, Wasserkraft) ersetzen fossile Brennstoffe</li>
+                        <li><strong>Industrie:</strong> Dekarbonisierung durch Effizienzsteigerung und alternative Prozesse</li>
+                        <li><strong>Verkehr:</strong> Elektrifizierung und alternative Antriebe</li>
+                        <li><strong>Landwirtschaft:</strong> Nachhaltige Praktiken und Methaneinsparungen</li>
+                        <li><strong>Gebäude:</strong> Energieeffizienz und nachhaltige Materialien</li>
+                    </ul>
+                    <p>Technologische Innovationen und strategische Investitionen ermöglichen signifikante CO2-Einsparungen bei gleichzeitiger wirtschaftlicher Rentabilität.</p>
+
+                    <h3>3. Carbon Pricing - Marktbasierte Lösungen</h3>
+                    <h4>Mechanismen:</h4>
+                    <p><strong>A) Emissionshandelssysteme (ETS / Cap-and-Trade):</strong></p>
+                    <ul>
+                        <li>Staatliche Obergrenze (Cap) für Gesamtemissionen</li>
+                        <li>Unternehmen kaufen/verkaufen Emissionszertifikate</li>
+                        <li>Kosteneffizienz durch Handel zwischen Emittenten</li>
+                        <li>Beispiel: EU ETS (größtes Handelssystem)</li>
+                    </ul>
+                    <p><strong>B) Kohlenstoffsteuern:</strong></p>
+                    <ul>
+                        <li>Direkte Besteuerung des CO2-Ausstoßes pro Tonne</li>
+                        <li>Transparente Preisvorgabe</li>
+                        <li>Lenkungs- und Anreizwirkung</li>
+                    </ul>
+
+                    <h3>4. Wirtschaftliche Effekte & Chancen</h3>
+                    <p>Richtig ausgestaltete Klimapolitik kann wirtschaftliches Wachstum und Emissionsreduktion verbinden:</p>
+                    <ul>
+                        <li><strong>Innovationspotenzial:</strong> Neue Technologien und Geschäftsmodelle in grünen Sektoren</li>
+                        <li><strong>Arbeitsplätze:</strong> Beschäftigungswachstum in erneuerbaren Energien und Effizienzsektor</li>
+                        <li><strong>Wettbewerbsfähigkeit:</strong> Erste-Mover-Vorteil in Green Economy</li>
+                        <li><strong>Vermeidung von Kosten:</strong> Klimaschäden durch frühzeitige Maßnahmen minimieren</li>
+                    </ul>
+
+                    <h3>5. Geographische und Sektorale Unterschiede</h3>
+                    <p>Die Effizienz von CO2-Reduktionsmaßnahmen variiert erheblich:</p>
+                    <ul>
+                        <li>Industrieländer: Technologie, Infrastruktur vorhanden</li>
+                        <li>Entwicklungsländer: Unterstützung und Finanzierung notwendig</li>
+                        <li>Energieintensive Industrien: Höhere Kosten, spezielle Lösungen</li>
+                        <li>Servicesektor: Schnellere und günstigere Umstellungen</li>
+                    </ul>
+
+                    <h3>6. Implementierungsstrategien</h3>
+                    <p>Erfolgreiche Umsetzung erfordert ein integriertes Vorgehen:</p>
+                    <ul>
+                        <li>Klare, verlässliche regulatorische Rahmenbedingungen</li>
+                        <li>Stakeholder-Engagement (Industrie, Verbände, Zivilgesellschaft)</li>
+                        <li>Technologische Unterstützung (F&E, Innovation)</li>
+                        <li>Finanzielle Anreize (Subventionen, Steuererleichterungen)</li>
+                        <li>Internationale Koordination (Vermeidung von Carbon Leakage)</li>
+                        <li>Gerechter Übergang (Just Transition) für betroffene Regionen</li>
+                    </ul>
+
+                    <h3>7. Schlussfolgerung</h3>
+                    <p>Eine kombinierte Strategie aus technologischer Innovation, marktwirtschaftlichen Instrumenten und durchdachter Regulierung ermöglicht es, CO2-Emissionen deutlich zu senken, ohne dabei wirtschaftliche Verluste zu verursachen. Die Erfahrungen mit Carbon Pricing in der EU und anderen Regionen zeigen, dass:</p>
+                    <ul>
+                        <li>Wirtschaftliches Wachstum und Emissionsreduktion vereinbar sind</li>
+                        <li>Marktbasierte Mechanismen effizienter sind als Verbote</li>
+                        <li>Technologische Innovation durch wirtschaftliche Anreize beschleunigt wird</li>
+                        <li>Eine globale Koordination essentiell ist für langfristigen Erfolg</li>
+                    </ul>
+
+                    <p style="margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--accent-blue); color: var(--accent-blue); font-size: 11px;">
+                        <strong>📌 Hinweis:</strong> Dies ist eine Zusammenfassung der Facharbeit. Für detaillierte Analysen, Datenvisualisierungen und vollständige Quellenangaben öffnen Sie bitte das PDF in der PDF-Ansicht.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULLSCREEN MODAL -->
+    <div class="modal" id="fullscreenModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>FACHARBEIT - VOLLBILD</h2>
+                <button class="close-btn" onclick="closeFullscreenPDF()">✕ SCHLIESSEN</button>
+            </div>
+            <div class="modal-body">
+                <iframe
+                    id="modalPDF"
+                    class="modal-pdf"
+                    src="./Facharbeit final.pdf"
+                    title="Fullscreen PDF"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Detect screen size and show appropriate layout
+            updateLayout();
+            window.addEventListener('resize', updateLayout);
+        });
+
+        // Update layout based on screen size
+        function updateLayout() {
+            const width = window.innerWidth;
+            const tabNav = document.getElementById('tabNav');
+
+            if (width <= 1000) {
+                tabNav.style.display = 'flex';
+            } else {
+                tabNav.style.display = 'none';
+            }
+        }
+
+        // Tab switching for mobile/tablet
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // PDF Functions
+        function openFullscreenPDF() {
+            document.getElementById('fullscreenModal').classList.add('show');
+        }
+
+        function closeFullscreenPDF() {
+            document.getElementById('fullscreenModal').classList.remove('show');
+        }
+
+        function togglePDFView() {
+            const pdfViewer = document.getElementById('pdfViewer');
+            if (pdfViewer.style.display === 'none') {
+                pdfViewer.style.display = 'block';
+            } else {
+                pdfViewer.style.display = 'none';
+            }
+        }
+
+        function downloadPDF() {
+            const link = document.createElement('a');
+            link.href = './Facharbeit final.pdf';
+            link.download = 'Facharbeit-CO2-Reduktion-Carbon-Pricing.pdf';
+            link.click();
+        }
+
+        function downloadSummary() {
+            const summaryContent = document.getElementById('summaryContent').innerText;
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(summaryContent));
+            element.setAttribute('download', 'Zusammenfassung-Philius.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            const activeTab = document.querySelector('.tab-content.active .window-content');
+            if (activeTab) {
+                activeTab.scrollTop = 0;
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('fullscreenModal');
+            if (event.target === modal) {
+                closeFullscreenPDF();
+            }
+        }
+
+        // Keyboard escape to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeFullscreenPDF();
+            }
+        });
+    </script>
+</body>
+</html>
